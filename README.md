@@ -247,9 +247,9 @@ const App = () => {
   return (
     <div>
       <h1>react app</h1>
-      <Booklist					// このあたり編集
-        language={languages[0]}	// このあたり編集
-      />						// このあたり編集
+      <Booklist                 // このあたり編集
+        language={languages[0]} // このあたり編集
+      />
       <Booklist />
     </div>
   );
@@ -257,7 +257,7 @@ const App = () => {
 export default App;
 ```
 
-ここでは，「`App`コンポーネントから`Booklist`コンポーネントに」「languageという名前で」「languages[0]の値」を渡している．
+ここでは，「`App`コンポーネントから`Booklist`コンポーネントに」「`language`という名前で」「`languages[0]`の値」を渡している．
 
 タグ内に変数を入れるときは`{}`を使用する．
 
@@ -272,7 +272,7 @@ import React from 'react';
 const Booklist = props => {
   return (
     <div>
-      <p>this is {props.language} list component</p>	// ここを編集
+      <p>this is {props.language} list component</p>  // ここを編集
     </div>
   );
 }
@@ -307,10 +307,10 @@ const App = () => {
         language={languages[0]}
       />
       <Booklist
-        language={languages[1]}	// ここは'Vue'を渡す
+        language={languages[1]} // ここは'Vue'を渡す
       />
       <Booklist
-        language={languages[2]} // 'Angular'を渡す
+        language={languages[2]} // ここは'Angular'を渡す
       />
     </div>
   );
@@ -354,26 +354,26 @@ $ npm install react-router-dom
 // App.jsx
 import React from 'react';
 import Booklist from './components/Booklist';
-import { BrowserRouter, Route, Link } from 'react-router-dom';	// 追加
+import { BrowserRouter, Route, Link } from 'react-router-dom';  // 追加
 
 const App = () => {
   const languages = ['React', 'Vue', 'Angular'];
   return (
-    <BrowserRouter>		// 追加（ルーティングは<BrowserRouter>の中で行う）
+    <BrowserRouter>   // 追加（ルーティングは<BrowserRouter>の中で行う）
       <div>
         <h1>react app</h1>
-        <Route exact path='/' component={Booklist} />		// 編集
-        <Route path='/vue' component={Booklist} />		// 編集
-        <Route path='/angular' component={Booklist} />	// 編集
+        <Route exact path='/' component={Booklist} />   // 編集
+        <Route path='/vue' component={Booklist} />      // 編集
+        <Route path='/angular' component={Booklist} />  // 編集
       </div>
-    </BrowserRouter>		// 追加
+    </BrowserRouter>  // 追加
   );
 }
 export default App;
 ```
 
 - `<BrowserRouter>`の中に`<Route>`を置き，`path`に対応させたいURLを，`component`に描画したいコンポーネントを渡す．
-- `exact`を設定しないと`path`が入力したURLに前方一致していれば描画されるため，`path='/'`にはexactを設定しています。
+- `exact`を設定しないと`path`が入力したURLに前方一致していれば描画されるため（全部`/`で認識されてしまう），`path='/'`には`exact`を設定している．
 - この時点では，各コンポーネントに`props`を渡していないため，URLを変更しても表示は変化しない．
 
 ### ルーティングしながらpropsを渡す
@@ -388,7 +388,7 @@ export default App;
 // App.jsx
 import React from 'react';
 import Booklist from './components/Booklist';
-import { BrowserRouter, Route, Link } from 'react-router-dom';	// 追加
+import { BrowserRouter, Route, Link } from 'react-router-dom';  // 追加
 
 const App = () => {
   const languages = ['React', 'Vue', 'Angular'];
@@ -396,9 +396,9 @@ const App = () => {
     <BrowserRouter>
       <div>
         <h1>react app</h1>
-        <Route exact path='/' render={props => <Booklist language={languages[0]} />} />	// 編集
-        <Route path='/vue' render={props => <Booklist language={languages[1]} />} />		// 編集
-        <Route path='/angular' render={props => <Booklist language={languages[2]} />} />	// 編集
+        <Route exact path='/' render={props => <Booklist language={languages[0]} />} />   // 編集
+        <Route path='/vue' render={props => <Booklist language={languages[1]} />} />    // 編集
+        <Route path='/angular' render={props => <Booklist language={languages[2]} />} />    // 編集
       </div>
     </BrowserRouter>
   );
@@ -432,12 +432,12 @@ const App = () => {
     <BrowserRouter>
       <div>
         <h1>react app</h1>
-        <ul>										// この辺から追加
+        <ul>        // この辺から追加
           <li><Link to='/'>React</Link></li>
           <li><Link to='/vue'>Vue</Link></li>
           <li><Link to='/angular'>Angular</Link></li>
         </ul>
-        <hr />									// この辺まで追加
+        <hr />      // この辺まで追加
         <Route exact path='/' render={props => <Booklist language={languages[0]} />} />
         <Route path='/vue' render={props => <Booklist language={languages[1]} />} />
         <Route path='/angular' render={props => <Booklist language={languages[2]} />} />
@@ -495,7 +495,7 @@ const App = () => {
             props =>
               <Booklist
                 language={languages[0]}
-                getData={keyword => getDataFromAPI(keyword)}	// getDataという名前で関数を渡す
+                getData={keyword => getDataFromAPI(keyword)}  // getDataという名前で関数を渡す
               />}
         />
         <Route path='/vue' render={props => <Booklist language={languages[1]} />} />
@@ -520,7 +520,7 @@ export default App;
 import React from 'react';
 
 const Booklist = props => {
-  const result = props.getData?.(props.language);	// `?`を使用することで，`getData`が存在する場合のみ関数を実行できる
+  const result = props.getData?.(props.language); // `?`を使用することで，`getData`が存在する場合のみ関数を実行できる
   return (
     <div>
       <p>this is {result} list component</p>
@@ -565,7 +565,7 @@ const App = () => {
             props =>
               <Booklist
                 language={languages[0]}
-                getData={keyword => getDataFromAPI(keyword)} // getDataという名前で関数を渡す
+                getData={keyword => getDataFromAPI(keyword)}  // getDataという名前で関数を渡す
               />}
         />
         <Route
@@ -644,13 +644,13 @@ const getDataFromAPI = async keyword => {
 
 ```jsx
 // Booklist.jsx
-import React, { useState, useEffect } from 'react';	// 追加
+import React, { useState, useEffect } from 'react'; // 追加
 
 const Booklist = props => {
-  const [bookData, setBookData] = useState(null);	// ここから追加
+  const [bookData, setBookData] = useState(null);   // ここから追加
   useEffect(() => {
     const result = props.getData?.(props.language).then(response => setBookData(response));
-  }, [props])									// ここまで追加
+  }, [props])                                       // ここまで追加
   return (
     <div>
       <p>this is {JSON.stringify(bookData)} list component</p>	// 編集（オブジェクトはそのまま表示できないのでJSON.stringify()する）
@@ -732,7 +732,7 @@ const Booklist = props => {
   return (
     <div>
       <ul>
-        {	// このあたり編集
+        {     // このあたり編集
           bookData === null
             ? <p>now loading...</p>
             : bookData.data.items.map((x, index) => <li key={index}>{x.volumeInfo.title}</li>)
