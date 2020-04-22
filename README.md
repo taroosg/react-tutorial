@@ -115,6 +115,25 @@ export default App;
 - `src/App.test.js`
 - `src/logo.svg`
 
+また，`index.js`の内容を以下のように編集する．
+
+```js
+// index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import * as serviceWorker from './serviceWorker';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+serviceWorker.unregister();
+```
+
 以下のコマンドで開発サーバを起動する．
 
 ```bash
@@ -155,16 +174,17 @@ export default Booklist;
 コンポーネントの作成
 
 - コンポーネントには「classコンポーネント」と「関数コンポーネント」の2種類が存在する．
-- classコンポーネントは「状態を持つことができる（ステートフル）」という特徴があるが，関数コンポーネントでも「react hooks」という技術を使うことで同様の振る舞いを実現することができる．
+- classコンポーネントは「状態を持つことができる（ステートフル）」という特徴があるが，関数コンポーネントでは「状態を持つことができない（ステートレス）」．
+- しかし，関数コンポーネントでも「React hooks」という技術を使うことで同様の振る舞いを実現することができる．
 - 「state」というのはコンポーネント自体が持つ値であり，他にコンポーネントが外から受け取る「props」が存在する．
 - コンポーネント作成の際には，できるだけstateを持たないよう設計すると動作確認が楽になるだけでなく，バグの生まれる可能性も低減できる．
-- そのため，本記事では可能な限り関数コンポーネントを使用してアプリケーションを構築する．
+- そのため，本記事ではすべて関数コンポーネントを使用してアプリケーションを構築し，必要に応じて「React hooks」を使用して状態を管理する．
 
 コンポーネントの構造
 
 - `import ...`は必要なライブラリを読み込む．
 - 関数`Booklist`は呼び出し元のコンポーネントから`props`を受け取り，`<div>`要素を出力する．
-- `export default Booklist`とすることで，他のコンポーネントから`import`で呼び出せるようにしている．
+- `export default Booklist`とすることで，他のコンポーネントから`import Booklist`のように記述して呼び出せるようにしている．
 
 ## コンポーネントの呼び出し（1）
 
@@ -281,7 +301,7 @@ export default Booklist;
 
 ブラウザで画面を確認すると以下のような状態になる．
 
-1つめのコンポーネントは`React`の文字列が追加いるが，2つめのコンポーネントには追加されていない．なぜだろうか．
+1つめのコンポーネントは`React`の文字列が追加されているが，2つめのコンポーネントには追加されていない．なぜだろうか．
 
 ![メイン画面4](./images/mainview04.png)
 
@@ -388,7 +408,7 @@ export default App;
 // App.jsx
 import React from 'react';
 import Booklist from './components/Booklist';
-import { BrowserRouter, Route, Link } from 'react-router-dom';  // 追加
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 const App = () => {
   const languages = ['React', 'Vue', 'Angular'];
@@ -459,7 +479,7 @@ export default App;
 
 ページごとにコンポーネントを表示できたので，それぞれのページでキーワードから本のデータを取得したい．
 
-全ての子コンポーネントで実行する処理は同じなので，`App.jsx`で関数を定義して子コンポーネントに渡してあげれば効率が良い．
+子コンポーネントで関数を定義してもよいが，今回は`App.jsx`で関数を定義して子コンポーネントに渡す（関数の渡し方の練習）．
 
 ### 関数の定義を`props`の1つとして渡す
 
@@ -666,7 +686,7 @@ export default Booklist;
 
 ### 【解説】useState
 - useStateは関数コンポーネントが値（今回はAPIから取得したデータ）を保持するための機能．
-- `const [bookData, setBookData] = useState(null);`の`bookData`が変数名，`setBookData`がデータを更新するための関数，`useState(null)`の`null`が`bookData`の初期値となる．
+- `const [bookData, setBookData] = useState(null);`の`bookData`がデータを保持するための変数名，`setBookData`がデータを更新するための関数，`useState(null)`の`null`が`bookData`の初期値となる．
 - `setBookData(最新の値)`のように記述することで，`bookData`の値が最新の値に更新される．
 - `bookData`に保存した内容を表示したいときなどは通常の変数のように扱えばOK．
 
@@ -713,7 +733,7 @@ export default Booklist;
 
 ![メイン画面10](./images/mainview10.png)
 
-このエラーの原因は，まだAPIからデータを取得していない状態でレンダリングしようとして`map()`関数が実行されているためである．
+このエラーの原因は，まだAPIからデータを取得していない状態でレンダリングしようとして`map()`関数が実行されているためである．`map()`関数は配列に対して処理を行う関数だが，配列のデータが存在しない状態で実行しようとしているためエラーとなる．
 
 三項演算子を使用して，`bookData`の有無で表示を切り替えることで回避できる．
 
